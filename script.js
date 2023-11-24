@@ -1,4 +1,4 @@
-const players = ["Joe", "Caroline", "Sabrina"];
+const players = ["Tina", "Jorge", "Julien"];
 
 function luckyDraw(player) {
     return new Promise((resolve, reject) => {
@@ -11,11 +11,19 @@ function luckyDraw(player) {
                 reject(new Error(`${player} lost the draw.`));
             }
         });
-
-        players.forEach(el => {
-            luckyDraw(el)
-                .then((value) => console.log(value))
-                .catch((error) => console.error(error))
-        })
     });
 }
+
+function getResults(players) {
+    players.forEach(async el => {
+        try {
+            const result = await luckyDraw(el)
+            console.log(result)
+        } catch(error){
+            console.error(error)
+        }
+    })
+
+}
+
+getResults(players)
