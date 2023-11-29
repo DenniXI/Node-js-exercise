@@ -28,11 +28,16 @@ app.get('/api/planets', (req, res) => {
     res.status(200).json(planets)
 })
 
-app.get('/api/planets/:id', (req, res) => {
-    const { id } = res.params
-    const planet = planets.find(p => p.id === Number(id))
-    res.status(200).json(planet)
-})
+app.get("/api/planets/:id", (req, res) => {
+  const id = JSON.parse(req.params.id);
+  const findUser = planets.filter((planet) => planet.id === id);
+
+  if (findUser.length > 0) {
+    res.status(200).json(findUser);
+  } else {
+    res.status(500).send("Errore interno");
+  }
+});
 
 app.post('/api/planets', (req, res) => {
     const { id, name } = req.body

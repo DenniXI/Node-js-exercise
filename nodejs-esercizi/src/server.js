@@ -39,10 +39,15 @@ var planets = [
 app.get('/api/planets', function (req, res) {
     res.status(200).json(planets);
 });
-app.get('/api/planets/:id', function (req, res) {
-    var id = res.params.id;
-    var planet = planets.find(function (p) { return p.id === Number(id); });
-    res.status(200).json(planet);
+app.get("/api/planets/:id", function (req, res) {
+    var id = JSON.parse(req.params.id);
+    var findUser = planets.filter(function (planet) { return planet.id === id; });
+    if (findUser.length > 0) {
+        res.status(200).json(findUser);
+    }
+    else {
+        res.status(500).send("Errore interno");
+    }
 });
 app.post('/api/planets', function (req, res) {
     var _a = req.body, id = _a.id, name = _a.name;
