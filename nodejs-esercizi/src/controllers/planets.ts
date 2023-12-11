@@ -1,13 +1,13 @@
 import { Request, Response } from "express"
-const pgPromise = require('pg-promise')
-const joi = require('joi')
+import pgPromise from 'pg-promise'
 
 const db = pgPromise()("postgres://postgres:postgres@localhost:5432/video")
 console.log(db)
 
-const setupDB = async () => {
+const setupDb = async () => {
     await db.none(`
-        DROP TABLE IF EXISTS planets
+        DROP TABLE IF EXISTS planets;
+
         CREATE TABLE planets(
             id SERIAL NOT NULL PRIMARY KEY,
             name TEXT NOT NULL 
@@ -16,10 +16,10 @@ const setupDB = async () => {
     await db.none(`INSERT INTO planets (name) VALUES ('Earth')`)
     await db.none(`INSERT INTO planets (name) VALUES ('Mars')`)
 
-    const planets = await db.many(`SELECT * FROM planets`);
-    console.log(planets)
+    // const planets = await db.many(`SELECT * FROM planets`);
+    // console.log(planets)
 }
-setupDB()
+setupDb()
 
 // type Planet = {
 //     id: number,

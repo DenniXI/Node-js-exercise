@@ -1,13 +1,7 @@
-const express = require('express')
-const morgan =  require('morgan')
+import express from 'express';
+import morgan from 'morgan';
 import 'express-async-errors'
-import {
-  getAll,
-  getOneById,
-  create,
-  updateById,
-  deleteById,
-} from "./planets"
+import { getAll, getOneById, create, updateById, deleteById } from "./controllers/planets"
 
 const port = 3000
 const app = express()
