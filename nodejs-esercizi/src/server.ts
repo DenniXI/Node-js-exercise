@@ -1,4 +1,3 @@
-import {log} from 'console';
 import express  from 'express'
 import 'express-async-errors'
 import morgan from 'morgan'
@@ -10,6 +9,9 @@ import {
   deleteById,
 } from "./Controllers/planets"
 import multer from "multer"
+import { logIn } from './Controllers/users'
+import "./passport.js"
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -35,6 +37,8 @@ app.get('/planets/:id', getOneById);
 app.post('/planets', create)
 app.put('/planets/:id', updateById)
 app.delete('/planets/:id', deleteById)
+
+app.post('/users/login', logIn);
 
 app.listen(port, ()=>{
     console.log(`Example app listening on https://localhost:${port}`)
