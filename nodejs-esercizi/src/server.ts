@@ -9,8 +9,9 @@ import {
   deleteById,
 } from "./Controllers/planets"
 import multer from "multer"
-import { logIn } from './Controllers/users'
+import { logIn, signUp } from './Controllers/users'
 import "./passport.js"
+import { sign } from 'crypto'
 
 
 const storage = multer.diskStorage({
@@ -39,6 +40,7 @@ app.put('/planets/:id', updateById)
 app.delete('/planets/:id', deleteById)
 
 app.post('/users/login', logIn);
+app.post('/users/signup', signUp);
 
 app.listen(port, ()=>{
     console.log(`Example app listening on https://localhost:${port}`)
