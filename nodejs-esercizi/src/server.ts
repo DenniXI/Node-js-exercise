@@ -34,5 +34,5 @@ app.delete('/planets/:id', deleteById);
 app.post('planets/:id/image', upload.single("image"), createImage);
 
 app.listen(port, ()=>{
-    console.log(`Example app listening on https://localhost:${port}`)
+    console.log(`Example app listening on http://localhost:${port}`)
 })

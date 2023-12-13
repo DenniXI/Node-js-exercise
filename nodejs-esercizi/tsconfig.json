@@ -3,9 +3,9 @@
   "compilerOptions": {
     "strict": true,
     "outDir": "./dist",
-    "module": "es6",
+    "module": "CommonJS",
     "target": "ES6"
   },
-  "include": ["./src/**/*.ts"],
+  "include": ["./src/**/*.ts", "planets.ts"],
   "exclude": ["./src/**/*.test.js"]
 }
