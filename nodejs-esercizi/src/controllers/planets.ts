@@ -1,8 +1,7 @@
 import { Request, Response } from "express"
-import pgPromise from 'pg-promise'
+import pgPromise from 'pg-promise';
 
 const db = pgPromise()("postgres://postgres:postgres@localhost:5432/video")
-console.log(db)
 
 const setupDb = async () => {
     await db.none(`
@@ -10,7 +9,8 @@ const setupDb = async () => {
 
         CREATE TABLE planets(
             id SERIAL NOT NULL PRIMARY KEY,
-            name TEXT NOT NULL 
+            name TEXT NOT NULL,
+            image TEXT
         )
     `)
     await db.none(`INSERT INTO planets (name) VALUES ('Earth')`)
@@ -52,9 +52,11 @@ const getOneById = async (req: Request, res: Response) => {
 };
 
 const create = async (req: Request, res: Response) => {
-    const { id, name } = req.body
-    const newPlanet = { id, name }
+    const { name} = req.body;
+    const newPlanet = { name};
+    
     // planets = [...planets, newPlanet]
+    await db.none(`INSERT INTO planets (name) VALUES ($1)`, name);
     res.status(201).json({ msg: 'Planet created.' })
 };
 
@@ -62,13 +64,29 @@ const updateById = async (req: Request, res: Response) => {
     const { id } = req.params
     const { name } = req.body
     // planets = planets.map((p) => p.id === Number(id) ? ({ ...p, name }) : p)
+    await db.none(`UPDATE planets SET name=$2 WHERE id=$1`,[id, name]);
     res.status(200).json({ msg: 'Planet updated.' })
 }
 
-const deleteById = (req: Request, res: Response) => {
+const deleteById = async (req: Request, res: Response) => {
     const { id } = req.params
     // planets = planets.filter((p) => p.id !== Number(id))
+    await db.none(`DELETE FROM planets WHERE id=$1`, Number(id))
     res.status(200).json({ msg: 'Planet deleted.' })
 }
 
-export { getAll, getOneById, create, updateById, deleteById };
+const createImage = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const filename = req.file?.path;
+    if (filename) {
+        db.none(`UPDATE planets SET image=$2 WHERE id=$1`,[id, filename]);
+        res.status(200).json({ msg: "planet image uploaded successfully."})
+    } else{
+        res.status(400).json({ msg: "planet image failed to upload."})
+    }
+}
+
+export { getAll, getOneById, create, updateById, deleteById, createImage};
+
+//tsc -w per creare il file dist
+//
