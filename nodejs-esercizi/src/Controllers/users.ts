@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 import {db} from "./../db"
-import  { Request, Response }  from 'express';
+import  { Request, Response, json }  from 'express';
 import jwt from "jsonwebtoken"
 
 const logIn = async (req: Request, res: Response) => {
@@ -21,6 +21,16 @@ const logIn = async (req: Request, res: Response) => {
     }
 }
 
+const signUp = async (req: Request, res: Response) => {
+    const {username, password } = req.body;
+    const user = await db.oneOrNone(`SELECT * FROM users WHERE username=$1`, username);
+    if (user) {
+        res.status(409).json({msg: "User already in use."})
+    } else {
+        const { id } = await db.one(`INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id`, [username, password]);
+        res.status(201).json({msg:"User created successfully."});
+    }
+}
 
 
-export {logIn}
+export {logIn, signUp}
