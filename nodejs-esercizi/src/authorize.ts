@@ -13,4 +13,4 @@ const authorize = async (req: Request, res: Response, next:NextFunction) => {
     })(req, res, next)
 }
 
-export default {authorize}
+export default authorize
